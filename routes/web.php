@@ -45,12 +45,12 @@ $posts = [
     ]
 ];
 
-Route::get('posts', function() use($posts) {
+Route::get('posts', function () use ($posts) {
     // compact($posts) === ['posts' => $posts])
     return view('posts.index', ['posts' => $posts]);
 });
 
-Route::get('posts/{id}', function ($id) use($posts) {
+Route::get('posts/{id}', function ($id) use ($posts) {
 
     abort_if(!isset ($posts[$id]), 404);
 
@@ -65,24 +65,29 @@ Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
     return 'Posts from ' . $daysAgo . 'days ago';
 })->name('psots.recent.index');
 
-Route::get('/fun/responses', function() use($posts) {
+Route::get('/fun/responses', function () use ($posts) {
     return response($posts, 201)
-    ->header('Content-Type', 'application/json')
-    ->cookie('MY_COOKIE', 'Reshyyy', 3600);
+        ->header('Content-Type', 'application/json')
+        ->cookie('MY_COOKIE', 'Reshyyy', 3600);
 });
 
-Route::get('/fun/redirect', function(){
+Route::get('/fun/redirect', function() {
     return redirect('/contact');
 });
 
-Route::get('/fun/back', function(){
+Route::get('/fun/back', function() {
     return back();
 });
 
-Route::get('/fun/named-route', function(){
+Route::get('/fun/named-route', function() {
     return redirect()->route('posts.show', ['id' => 1]);
 });
 
-Route::get('/fun/away', function(){
+Route::get('/fun/away', function() {
     return redirect()->away('https://google.com');
 });
+
+Route::get('/fun/json', function() use ($posts) {
+    return response()->json($posts);
+});
+
