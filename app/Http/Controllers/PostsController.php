@@ -57,7 +57,7 @@ class PostsController extends Controller
     {
         $validated = $request->validated();
         $post = BlogPost::create($validated);
-        
+
 
         $request->session()->flash('status', 'The blog post was created!');
 
@@ -85,7 +85,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return view('posts.edit', ['post'  => BlogPost::findOrFail($id)]);
+        return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
     }
 
     /**
@@ -104,7 +104,7 @@ class PostsController extends Controller
 
         $request->session()->flash('status', 'Blog post was updated!');
 
-        return redirect()->route('posts.show', ['post'=> $post->id]);
+        return redirect()->route('posts.show', ['post' => $post->id]);
     }
 
     /**
@@ -113,8 +113,13 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        dd($id);
+        $post = BlogPost::findOrFail($id);
+        $post->delete();
+
+        $request->session()->flash('status', 'Blog post was delete!');
+
+        return redirect()->route('posts.index');
     }
 }
